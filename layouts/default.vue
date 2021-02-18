@@ -1,12 +1,12 @@
 <template>
-  <v-app>
+  <v-app >
     <v-app-bar flat app color="#ECF1F6">
       <v-container>
         <v-img src="/talently-logo.png" max-width="100"></v-img>
         <v-spacer />
       </v-container>
     </v-app-bar>
-    <v-main>
+    <v-main class="content">
       <v-container>
         <nuxt />
       </v-container>
@@ -41,3 +41,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.content {
+  background-color: #ECF1F6;
+}
+</style>

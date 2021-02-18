@@ -1,31 +1,27 @@
-import colors from 'vuetify/es5/util/colors'
+import colors from "vuetify/es5/util/colors";
+import authNext from "@nuxtjs/auth-next";
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - prueba-talently',
-    title: 'prueba-talently',
+    titleTemplate: "%s - prueba-talently",
+    title: "prueba-talently",
     htmlAttrs: {
-      lang: 'es'
+      lang: "es",
     },
     meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' }
+      { charset: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { hid: "description", name: "description", content: "" },
     ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ]
+    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [
-  ],
+  css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [
-    { src: `~plugins/vimeo-player` }
-  ],
+  plugins: [{ src: `~plugins/vimeo-player` }],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -33,21 +29,52 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/vuetify
-    '@nuxtjs/vuetify',
+    "@nuxtjs/vuetify",
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios',
+    "@nuxtjs/axios",
+    authNext,
   ],
 
+  auth: {
+    strategies: {
+      local: {
+        redirect: {
+          login: "/login",
+        },
+        token: {
+          property: "access_token",
+          required: true,
+          type: "Bearer",
+        },
+        user: {
+          property: "",
+          // autoFetch: true
+        },
+        endpoints: {
+          login: {
+            url: "auth/login",
+            method: "post",
+          },
+          user: {
+            url: "auth/me",
+            method: "post",
+          },
+        },
+      },
+    },
+  },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
+    baseURL: "https://fchallenge.talently.tech/api/",
+  },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
-    customVariables: ['~/assets/variables.scss'],
+    customVariables: ["~/assets/variables.scss"],
     theme: {
       dark: false,
       themes: {
@@ -58,16 +85,15 @@ export default {
           info: colors.teal.lighten1,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
-          success: colors.green.accent3
-        }
-      }
-    }
+          success: colors.green.accent3,
+        },
+      },
+    },
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    vendor: [
-      'vue-vimeo-player'
-    ],
-  }
-}
+    vendor: ["vue-vimeo-player"],
+    // standalone: true,
+  },
+};
