@@ -20,6 +20,7 @@
         </p>
         <p v-if="isEdit">
           <v-text-field
+            class="mb-2"
             @keydown="keyDownListener"
             v-model="commentUpdated"
             placeholder="Agregar comentario"
@@ -30,11 +31,11 @@
             flat
             background-color="#ECF1F6"
           ></v-text-field>
-          Cancelar
+          <span class="cancel" @click="isEdit = false">Cancelar</span>
         </p>
       </v-col>
       <v-col cols="1" class="text-right">
-        <v-menu offset-y left origin="top center" transition="scale-transition">
+        <v-menu offset-y left origin="top center" transition="scale-transition" v-if="!isEdit">
           <template v-slot:activator="{ on, attrs }">
             <v-btn v-bind="attrs" v-on="on" icon>
               <v-icon>mdi-dots-vertical</v-icon>
@@ -167,4 +168,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.cancel {
+  color: #30308c;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.cancel:hover {
+  cursor: pointer;
+}
 </style>

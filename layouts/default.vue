@@ -1,9 +1,14 @@
 <template>
-  <v-app >
+  <v-app>
     <v-app-bar flat app color="#ECF1F6">
-      <v-container>
-        <v-img src="/talently-logo.png" max-width="100"></v-img>
+      <v-container class="d-flex">
+        <div>
+          <v-img src="/talently-logo.png" max-width="100"></v-img>
+        </div>
         <v-spacer />
+        <v-btn @click="closeSession()" class="text-none btn--exit" text
+          >Cerrar sesión <v-icon class="ml-3">mdi-exit-to-app</v-icon></v-btn
+        >
       </v-container>
     </v-app-bar>
     <v-main class="content">
@@ -39,11 +44,22 @@ export default {
       title: "Vuetify.js",
     };
   },
+  methods: {
+    async closeSession() {
+     await this.$auth.logout();
+     this.$router.push("/login");
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 .content {
-  background-color: #ECF1F6;
+  background-color: #ecf1f6;
+}
+
+.btn--exit {
+  letter-spacing: normal;
+  font-weight: 600;
 }
 </style>

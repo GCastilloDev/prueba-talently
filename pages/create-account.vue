@@ -8,6 +8,16 @@
         <v-card-text>
           <v-form ref="form" v-model="valid" lazy-validation>
             <div class="mb-2">
+              <span class="black--text">Nombre</span>
+            </div>
+            <v-text-field
+              dense
+              v-model="user.name"
+              outlined
+              :rules="isRequired"
+              type="text"
+            ></v-text-field>
+            <div class="mb-2">
               <span class="black--text">Email</span>
             </div>
             <v-text-field
@@ -19,24 +29,20 @@
             ></v-text-field>
             <div class="d-flex justify-space-between mb-2">
               <span class="black--text">Password</span>
-              <span class="password-recovery font-weight-bold"
-                >¿Se te olvidó tu contraseña?</span
-              >
             </div>
             <v-text-field
-              @keydown="keyDownListener"
               dense
               v-model="user.password"
               outlined
-              :rules="isRequired"
+              :rules="passwordRules"
               type="password"
             ></v-text-field>
 
             <v-alert type="error" v-if="error">
-              Usuario y/o contraseña invalidos.
+              {{ messageError }}
             </v-alert>
             <v-btn
-              @click="userLogin"
+              @click="createAccount"
               class="text-none btn--text"
               :loading="loading"
               large
@@ -44,13 +50,13 @@
               block
               color="#30308C"
               dark
-              >Iniciar sesión</v-btn
+              >Crear cuenta</v-btn
             >
             <p class="text-center mt-5 create-account">
-              <span>¿Nuevo en Talently?</span>
+              <span>¿Ya tienes cuenta?</span>
 
-              <NuxtLink to="/create-account" class="create-account--link"
-                >Crea una cuenta.</NuxtLink
+              <NuxtLink to="/login" class="create-account--link"
+                >Inicia sesión.</NuxtLink
               >
             </p>
           </v-form>
@@ -65,6 +71,7 @@ export default {
   layout: "session",
   data: () => ({
     user: {
+      name: "",
       email: "",
       password: "",
     },
@@ -74,24 +81,34 @@ export default {
       (v) => /.+@.+\..+/.test(v) || "Ingresa un formato de email válido",
     ],
     isRequired: [(v) => !!v || "Campo requerido"],
+    passwordRules: [
+      (v) => !!v || "Campo requerido",
+      (v) => (v && v.length >= 6) || "Campo requiere como mínimo 6 caracteres",
+    ],
     loading: false,
     error: false,
+    messageError: "",
   }),
   methods: {
-    async userLogin() {
+    async createAccount() {
       if (!this.$refs.form.validate()) return;
 
       try {
         this.loading = true;
-        const { status } = await this.$auth.loginWith("local", {
-          data: this.user,
-        });
+        const response = await this.$axios.post(`auth/register`, this.user);
 
-        const { data } = await this.$axios.post("content");
-        this.$store.dispatch("listContentAdd", data.content);
+        if (!response.data.success) {
+          this.messageError = "Correo ya registrado.";
+          this.error = true;
 
-        if (status === 200) this.$router.push("/");
+          setTimeout(() => {
+            this.error = false;
+          }, 3000);
+        }
+
+        if (response.data.success) this.$router.push("/login");
       } catch (err) {
+        this.messageError = "Tuvimos un problena, intentalo más tarde.";
         this.error = true;
 
         setTimeout(() => {
@@ -100,9 +117,6 @@ export default {
       } finally {
         this.loading = false;
       }
-    },
-    keyDownListener(e) {
-      if (e.key === "Enter") this.userLogin();
     },
   },
 };

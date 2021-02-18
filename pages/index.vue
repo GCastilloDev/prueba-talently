@@ -10,6 +10,7 @@
               :video-id="videoID"
               :options="options"
               @timeupdate="timeUpdate"
+              @ended="ended"
             />
           </client-only>
 
@@ -55,11 +56,17 @@ export default {
     },
     items: [],
     showPlayer: false,
+    lastSecondUpdatedVideo: 0,
   }),
   methods: {
     timeUpdate(e) {
       const percentProgress = e.percent * 10;
-      this.$store.state.listContent[this.index].progress = percentProgress;
+      this.$store.dispatch("updateProgress", percentProgress);
+
+      if (e.seconds >= this.lastSecondUpdatedVideo)
+        this.updatedProgress(e.seconds, percentProgress);
+
+      // this.$store.state.listContent[this.index].progress = percentProgress;
     },
     async init() {
       if (this.$store.state.listContent.length > 0) {
@@ -80,6 +87,28 @@ export default {
       this.videoID = video.split("/")[3];
       this.showPlayer = true;
     },
+    async updatedProgress(seconds, percentProgress) {
+      try {
+        this.lastSecondUpdatedVideo = seconds + 5;
+        const progress = parseInt(percentProgress);
+        const data = {};
+        data.progress = progress;
+        const idContent = this.$store.state.listContent[this.index].id;
+        await this.$axios.post(`content/${idContent}/progress`, data);
+      } catch (error) {
+        console.warn(error);
+      }
+    },
+    async ended() {
+      try {
+        const data = {};
+        data.progress = 10;
+        const idContent = this.$store.state.listContent[this.index].id;
+        await this.$axios.post(`content/${idContent}/progress`, data);
+      } catch (error) {
+        console.warn(error);
+      }
+    },
   },
   computed: {
     index() {
@@ -88,6 +117,7 @@ export default {
   },
   watch: {
     index: function () {
+      this.lastSecondUpdatedVideo = 0;
       this.getVideoId();
       this.$refs.player.play();
     },

@@ -31,6 +31,12 @@ export const mutations = {
   },
   modifyComment(state, payload) {
     state.comments[payload.index].content = payload.content;
+  },
+  updateProgressVideo(state, payload) {
+    state.listContent[state.index].progress = payload;
+  },
+  setSession(state, payload) {
+    state.auth.loggedIn = payload;
   }
 };
 
@@ -52,5 +58,11 @@ export const actions = {
   },
   editComment({ commit }, payload) {
     commit("modifyComment", payload);
+  },
+  updateProgress({ commit }, payload) {
+    commit("updateProgressVideo", payload);
+  },
+  closeSession({ commit }) {
+    commit("setSession", false);
   }
 };

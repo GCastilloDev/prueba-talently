@@ -1,20 +1,11 @@
-# prueba-talently
+### Repo
 
-## Build Setup
+Repositorio para la prueba técnica de Talently, se anexa el [link](https://app-talently.herokuapp.com/ "link") de la aplicación en una nube.
 
-```bash
-# install dependencies
-$ npm install
+Para poder acceder a la aplicación se puede de dos formas:
+- Crear una cuenta nueva.
+- Ocupar las siguientes credenciales
+	- **Email: ** test1@gmail.com
+	- **Password: ** 123456
 
-# serve with hot reload at localhost:3000
-$ npm run dev
-
-# build for production and launch server
-$ npm run build
-$ npm run start
-
-# generate static project
-$ npm run generate
-```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+Se intento cubrir el máximo de los requerimientos en el tiempo permitido.
