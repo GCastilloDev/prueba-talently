@@ -1,14 +1,22 @@
 <template>
-    <div>
-        <h1>Play video</h1>
-        <video src="https://vimeo.com/39619054"></video>
-    </div>
+  <div>
+    <client-only>
+      <vimeo-player ref="player" :video-id="videoID" @durationchange="prueba" />
+    </client-only>
+  </div>
 </template>
 
 <script>
-    export default {
-        
+export default {
+    data: () => ({
+        videoID: "39619054"
+    }),
+    methods: {
+        prueba(e) {
+            console.log(e);
+        }
     }
+};
 </script>
 
 <style lang="scss" scoped>

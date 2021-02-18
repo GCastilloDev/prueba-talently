@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar :clipped-left="clipped" fixed flat app color="#ECF1F6">
+    <v-app-bar flat app color="#ECF1F6">
       <v-container>
         <v-img src="/talently-logo.png" max-width="100"></v-img>
         <v-spacer />

@@ -12,7 +12,8 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.12.5",
     "core-js": "^3.8.3",
-    "nuxt": "^2.14.12"
+    "nuxt": "^2.14.12",
+    "vue-vimeo-player": "^0.1.1"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.11.3"
